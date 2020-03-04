@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+<body>
+    <div id="app">
+        <div id="header" class="flex-center">
+            <span><i class="fas fa-clipboard-list"></i></span>
+            <span><%= title %></span>
+        </div>
+
+        <div id="app-body">
+
+            <form action="/add-task" method="POST" id="task-form">
+                <!--  Description Picker  -->
+                <div>
+                    <label for="task">Description : </label>
+                    <input type="text" name="task" placeholder="Enter task description" required class="input-item" id="task"> 
+                </div>                
+                
+                <!--  Category Picker  -->
+                <div>
+                    <label for="category-selector">Category : </label>
+                    <select name="category" id="category-selector" class="input-item" required>
+                        <option value="personal">Personal</option>
+                        <option value="work">Work</option>
+                        <option value="learning">Learning</option>
+                        <option value="physical">Physical</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+
+                
+                <!--  Date Picker  -->
+                <div>       
+                    <label for="calendar">Due Date <i class="far fa-calendar-alt" class="input-item"></i></label>
+                    <input type="date" name="dueDate" id="calendar" class="input-item">
+                </div>
+
+
+
+                
+                <div>
+                    <!--  Submit Button  -->
+                    <button type="submit" class="btn"><i class="fas fa-plus"></i> Add Task</button>
+                    <!--  Delete Button  -->
+                    <button type="submit" class="btn" form="task-list" style="background-color: red;"><i class="far fa-trash-alt"></i> Delete Tasks</button>
+                </div>
+                
+        
+            </form>
+
+            <section id="task-list-section">
+                <!--  Delete Task via checkbox -->
+                <form id="task-list" method="GET" action="/delete-task">
+                    <%  var arr = locals.taskList %>
+                    <% for(let i=0;arr.length>i;i++){ %>
+                        <div class="list-item">
+
+                            <div class="task-display">
+                                <div><%=       i+1+"."   %></div>
+
+                                <div> <!-- checkbox to delete -->
+                                    <input type="checkbox" name="<%= i+1 %>" value="<%=  arr[i]._id %>">
+                                </div>
+
+                                <div class="task-info">
+                                    <div class="task-name"><%=  arr[i].task  %> </div>
+                                    <div class="task-date"> 
+                                        <i class="far fa-calendar-alt"></i>
+                                        <%=  arr[i].dueDate  %> 
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="task-type flex-center <%= color[arr[i].category]  %>">
+                                
+                                <div><%=  arr[i].category %></div>
+                            
+                            </div>
+                        </div>
+                    
+                    <% } %>
+                </form>
+
+            </section>
+
+            
+        </div>
+    </div>
+</body>
+</html>
